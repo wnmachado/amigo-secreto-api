@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->dateTime('event_date');
-            $table->decimal('min_value', 10, 2)->nullable();
-            $table->decimal('max_value', 10, 2)->nullable();
-            $table->string('status')->default('draft'); // draft, ready, draw_done
+            $table->decimal('min_value', 10, 2);
+            $table->decimal('max_value', 10, 2);
+            $table->string('status')->default('draft');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->default(DB::raw('NULL ON UPDATE CURRENT_TIMESTAMP'))->nullable();
             $table->softDeletes();

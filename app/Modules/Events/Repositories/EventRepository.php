@@ -32,7 +32,7 @@ class EventRepository
             $query->where('status', $status);
         }
 
-        return $query->get();
+        return $query->orderBy('event_date', 'desc')->get();
     }
 
     /**

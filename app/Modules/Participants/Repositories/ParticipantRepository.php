@@ -23,7 +23,7 @@ class ParticipantRepository
             return $event->participants()->where('is_confirmed', $request->confirmed)->get();
         }
 
-        return $event->participants()->get();
+        return $event->participants()->orderBy('name', 'asc')->get();
     }
 
     /**
