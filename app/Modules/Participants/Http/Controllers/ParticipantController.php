@@ -111,9 +111,7 @@ class ParticipantController extends Controller
 
         $this->authorize('update', $event);
 
-        $request->validate([
-            'code' => ['required', 'size:6'],
-        ]);
+        $request->validate(['code' => ['required', 'size:6'], 'whatsapp_number' => ['required', 'string', 'max:255']]);
 
         $participant = $this->participantRepository->findById($id);
 
@@ -123,7 +121,7 @@ class ParticipantController extends Controller
 
         $participant->update(['is_confirmed' => true, 'code' => null]);
 
-        return response()->json(['message' => 'Código de verificação verificado com sucesso']);
+        return response()->json(['message' => 'Presença confirmada com sucesso']);
     }
 
     /**
