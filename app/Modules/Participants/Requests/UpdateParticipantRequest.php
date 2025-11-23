@@ -24,6 +24,7 @@ class UpdateParticipantRequest extends FormRequest
         return [
             'name' => ['sometimes', 'required', 'string', 'max:255'],
             'whatsapp_number' => ['required', 'string', 'max:255'],
+            'gift_suggestion' => ['required', 'string', 'max:255'],
         ];
     }
 }

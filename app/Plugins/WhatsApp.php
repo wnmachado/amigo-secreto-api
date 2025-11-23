@@ -22,21 +22,21 @@ class WhatsApp
 
     public function sendOnlyLink(string $phone, string $linkUrl, string $title, string $linkDescription): string
     {
-        return $this->repository->sendOnlyLink($phone, $linkUrl, $title, $linkDescription);
+        return $this->repository->sendOnlyLink("55{$phone}", $linkUrl, $title, $linkDescription);
     }
 
     public function sendMessageLink(string $message, string $phone, $user, string $linkUrl, string $title, string $linkDescription, int $delayTyping = 2): string
     {
-        return $this->repository->sendMessageLink($message, $phone, $user, $linkUrl, $title, $linkDescription, $delayTyping);
+        return $this->repository->sendMessageLink($message, "55{$phone}", $user, $linkUrl, $title, $linkDescription, $delayTyping);
     }
 
     public function sendDefaultMessageText(string $student, int $clientId, string $phone, $user): string
     {
-        return $this->repository->sendDefaultMessageText($student, $clientId, $phone, $user);
+        return $this->repository->sendDefaultMessageText($student, $clientId, "55{$phone}", $user);
     }
 
     public function sendMessageDocument($document, string $phone, string $fileName, int $delayTyping = 2): string
     {
-        return $this->repository->sendMessageDocument($document, $phone, $fileName, $delayTyping);
+        return $this->repository->sendMessageDocument($document, "55{$phone}", $fileName, $delayTyping);
     }
 }

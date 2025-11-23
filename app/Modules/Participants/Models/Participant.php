@@ -14,6 +14,8 @@ class Participant extends Model
         'event_id',
         'name',
         'whatsapp_number',
+        'code',
+        'gift_suggestion',
         'is_confirmed',
     ];
 

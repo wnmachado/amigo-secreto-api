@@ -17,8 +17,12 @@ class ParticipantRepository
     /**
      * Get all participants for an event.
      */
-    public function getByEvent(Event $event): Collection
+    public function getByEvent(Event $event, Request $request): Collection
     {
+        if ($request->has('confirmed')) {
+            return $event->participants()->where('is_confirmed', $request->confirmed)->get();
+        }
+
         return $event->participants()->get();
     }
 
