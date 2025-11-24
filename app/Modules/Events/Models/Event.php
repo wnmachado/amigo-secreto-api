@@ -78,6 +78,14 @@ class Event extends Model
     }
 
     /**
+     * Alias for draw results to expose "pairs" relationship.
+     */
+    public function pairs(): HasMany
+    {
+        return $this->drawResults()->with(['giver', 'receiver']);
+    }
+
+    /**
      * Get the confirmed participants count.
      */
     public function getConfirmedParticipantsCountAttribute(): int

@@ -25,6 +25,8 @@ class EventResource extends JsonResource
             'status' => $this->status,
             'participants_count' => $this->participants_count,
             'confirmed_participants_count' => $this->confirmed_participants_count,
+            'draw_results_count' => $this->draw_results_count,
+            'pairs' => $this->whenLoaded('pairs'),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

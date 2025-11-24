@@ -55,6 +55,7 @@ class EventController extends Controller
         $event->loadCount(['participants as confirmed_participants_count' => function ($query) {
             $query->where('is_confirmed', true);
         }]);
+        $event->load('pairs');
 
         return response()->json($event, 200);
     }

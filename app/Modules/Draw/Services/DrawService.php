@@ -6,6 +6,7 @@ use App\Modules\Draw\Repositories\DrawResultRepository;
 use App\Modules\Participants\Repositories\ParticipantRepository;
 use App\Modules\Events\Repositories\EventRepository;
 use App\Modules\Events\Models\Event;
+use App\Plugins\WhatsApp;
 use Illuminate\Support\Collection;
 
 class DrawService
@@ -49,6 +50,11 @@ class DrawService
                 $pair['receiver']
             );
             $drawResults->push($drawResult);
+            $message = "Sorteio do evento *" . $event->title . " realizado*.\n\n";
+            $message .= "Seu amigo secreto é *" . $pair['receiver']->name . "*.\n\n";
+            $message .= "Confira a sugestão de presente do seu amigo secreto:\n\n";
+            $message .= $pair['receiver']->gift_suggestion;
+            (new WhatsApp())->sendMessageText($message, (string)$pair['giver']->whatsapp_number, 'Olá, *' . $pair['giver']->name . '*!', 2);
         }
 
         // Update event status

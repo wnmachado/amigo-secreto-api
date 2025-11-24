@@ -89,7 +89,14 @@ class ParticipantController extends Controller
         $request->merge(['code' => $code]);
         $participant->update($request->all());
 
-        $message = "Você foi convidado para participar do evento *" . $event->title . "*.\n\nUse o código para confirmar sua presença no evento.";
+        $message = "Você foi convidado para participar do evento *" . $event->title . "*.";
+        if ($event->description) {
+            $message .= "\n\nInformações do evento:" . $event->description;
+        }
+        $message .= "\n\nData do evento: " . $event->event_date->format('d/m/Y');
+        $message .= "\nValor mínimo: " . $event->min_value;
+        $message .= "\nValor máximo: " . $event->max_value;
+        $message .= "\n\nUse o código para confirmar sua presença no evento:";
         $message .= "\n\nCódigo de verificação: " . $participant->code;
 
         (new WhatsApp())->sendMessageText(

@@ -26,7 +26,8 @@ class EventRepository
             ->withCount('participants')
             ->withCount(['participants as confirmed_participants_count' => function ($query) {
                 $query->where('is_confirmed', true);
-            }]);
+            }])
+            ->withCount('drawResults as draw_results_count');
 
         if ($status) {
             $query->where('status', $status);
@@ -61,7 +62,10 @@ class EventRepository
      */
     public function findByUuid(string $uuid): ?Event
     {
-        return $this->model->where('uuid', $uuid)->first();
+        return $this->model
+            ->withCount('drawResults as draw_results_count')
+            ->where('uuid', $uuid)
+            ->first();
     }
 
     /**
@@ -75,6 +79,7 @@ class EventRepository
         $event->loadCount(['participants as confirmed_participants_count' => function ($query) {
             $query->where('is_confirmed', true);
         }]);
+        $event->load('pairs');
 
         return $event;
     }
