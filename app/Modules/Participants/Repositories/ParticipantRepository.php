@@ -20,7 +20,9 @@ class ParticipantRepository
     public function getByEvent(Event $event, Request $request): Collection
     {
         if ($request->has('confirmed')) {
-            return $event->participants()->where('is_confirmed', $request->confirmed)->get();
+            return $event->participants()->where('is_confirmed', $request->confirmed)
+                ->orderBy('name', 'asc')
+                ->get();
         }
 
         return $event->participants()->orderBy('name', 'asc')->get();
