@@ -3,8 +3,10 @@
 namespace App\Modules\Participants\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Participants\Models\Participant;
 use App\Modules\Participants\Repositories\ParticipantRepository;
 use App\Http\Resources\ParticipantResource;
+use App\Modules\Participants\Requests\UpdateGiftSugestionRequest;
 use App\Plugins\WhatsApp;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -83,5 +85,27 @@ class ParticipantConfirmedController extends Controller
         $participant->update(['is_confirmed' => true, 'code' => null]);
 
         return response()->json(['message' => 'Presença confirmada com sucesso']);
+    }
+
+    public function update(UpdateGiftSugestionRequest $request, string $uuid, int $id): ParticipantResource
+    {
+        $event = \App\Modules\Events\Models\Event::where('uuid', $uuid)->firstOrFail();
+
+        $participant = Participant::with('drawResultsAsReceiver.giver')
+            ->where('event_id', $event->id)
+            ->find($id);
+
+        if (!$participant || $participant->event_id !== $event->id) {
+            abort(404, 'Participante não encontrado');
+        }
+
+        $participant->update($request->validated());
+
+        // enviar mensagem para o participante que tirou o participante que está sendo atualizado que o presente foi alterado
+        $giver = $participant->drawResultsAsReceiver->first()->giver;
+        $message = "Seu amigo secreto *" . $participant->name . "* alterou a sugestão de presente para: " . $participant->gift_suggestion;
+        (new WhatsApp())->sendMessageText($message, (string)$giver->whatsapp_number, 'Olá, *' . $giver->name . '*!', 2);
+
+        return new ParticipantResource($participant);
     }
 }

@@ -14,5 +14,6 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::get('events/{uuid}/confirmed/participants', [ParticipantConfirmedController::class, 'index'])->where('uuid', REGEX_UUID);
+Route::put('events/{uuid}/confirmed/participants/{id}/change-git-sugestions', [ParticipantConfirmedController::class, 'update'])->where('uuid', REGEX_UUID)->where('id', REGEX_ID);
 Route::post('events/{uuid}/confirmed/participants/{id}/send-whatsapp-code', [ParticipantConfirmedController::class, 'sendWhatsappCode'])->where('uuid', REGEX_UUID)->where('id', REGEX_ID);
 Route::post('events/{uuid}/confirmed/participants/{id}/verify-whatsapp-code', [ParticipantConfirmedController::class, 'verifyWhatsappCode'])->where('uuid', REGEX_UUID)->where('id', REGEX_ID);
