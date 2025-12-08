@@ -108,13 +108,4 @@ class ParticipantConfirmedController extends Controller
 
         return new ParticipantResource($participant);
     }
-
-    public function sendSugestionsReminder(string $uuid): JsonResponse
-    {
-        $event = \App\Modules\Events\Models\Event::where('uuid', $uuid)->firstOrFail();
-
-        $this->participantRepository->sendSugestionsReminder($event);
-
-        return response()->json(['message' => 'Mensagens enviadas com sucesso']);
-    }
 }

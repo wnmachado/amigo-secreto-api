@@ -85,4 +85,18 @@ class ParticipantController extends Controller
 
         return response()->json(['message' => 'Participante removido com sucesso']);
     }
+
+    /**
+     * Send suggestions reminder to all confirmed participants.
+     */
+    public function sendSugestionsReminder(string $uuid): JsonResponse
+    {
+        $event = \App\Modules\Events\Models\Event::where('uuid', $uuid)->firstOrFail();
+
+        $this->authorize('update', $event);
+
+        $this->participantRepository->sendSugestionsReminder($event);
+
+        return response()->json(['message' => 'Mensagens enviadas com sucesso']);
+    }
 }
