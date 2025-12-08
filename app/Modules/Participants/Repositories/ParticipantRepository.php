@@ -75,9 +75,9 @@ class ParticipantRepository
 
     public function sendSugestionsReminder(Event $event): bool
     {
-        $participants = $event->participants()->where('is_confirmed', true)->get();
+        $participants = $event->participants()->with('drawResultsAsGiver.receiver')->where('is_confirmed', true)->get();
         foreach ($participants as $participant) {
-            $giver = $participant->drawResultsAsReceiver->first()->giver;
+            $giver = $participant->drawResultsAsGiver->receiver;
             $message = "Já escolheu o presente para o seu amigo secreto? Se não, reveja a sugestão do seu amigo secreto, " . $giver->name . ": " . $giver->gift_suggestion;
             (new WhatsApp())->sendMessageText($message, (string)$participant->whatsapp_number, 'Olá, *' . $participant->name . '*!', 2);
         }

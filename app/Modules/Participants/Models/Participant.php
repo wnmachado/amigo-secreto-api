@@ -7,6 +7,7 @@ use App\Modules\Draw\Models\DrawResult;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Participant extends Model
 {
@@ -37,16 +38,16 @@ class Participant extends Model
     /**
      * Get the draw results where this participant is the giver.
      */
-    public function drawResultsAsGiver(): HasMany
+    public function drawResultsAsGiver(): HasOne
     {
-        return $this->hasMany(DrawResult::class, 'giver_participant_id');
+        return $this->hasOne(DrawResult::class, 'giver_participant_id');
     }
 
     /**
      * Get the draw results where this participant is the receiver.
      */
-    public function drawResultsAsReceiver(): HasMany
+    public function drawResultsAsReceiver(): HasOne
     {
-        return $this->hasMany(DrawResult::class, 'receiver_participant_id');
+        return $this->hasOne(DrawResult::class, 'receiver_participant_id');
     }
 }
