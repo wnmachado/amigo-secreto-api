@@ -4,6 +4,7 @@ namespace App\Modules\Participants\Repositories;
 
 use App\Modules\Participants\Models\Participant;
 use App\Modules\Events\Models\Event;
+use App\Plugins\WhatsApp;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
@@ -70,5 +71,16 @@ class ParticipantRepository
     public function delete(Participant $participant): bool
     {
         return $participant->delete();
+    }
+
+    public function sendSugestionsReminder(Event $event): bool
+    {
+        $participants = $event->participants()->where('is_confirmed', true)->get();
+        foreach ($participants as $participant) {
+            $giver = $participant->drawResultsAsReceiver->first()->giver;
+            $message = "Já escolheu o presente para o seu amigo secreto? Se não, reveja a sugestão do seu amigo secreto, " . $giver->name . ": " . $giver->gift_suggestion;
+            (new WhatsApp())->sendMessageText($message, (string)$participant->whatsapp_number, 'Olá, *' . $participant->name . '*!', 2);
+        }
+        return true;
     }
 }

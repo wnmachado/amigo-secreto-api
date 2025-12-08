@@ -11,6 +11,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('events/{uuid}/participants', [ParticipantController::class, 'store'])->where('uuid', REGEX_UUID);
     Route::put('events/{uuid}/participants/{id}', [ParticipantController::class, 'update'])->where('uuid', REGEX_UUID)->where('id', REGEX_ID);
     Route::delete('events/{uuid}/participants/{id}', [ParticipantController::class, 'destroy'])->where('uuid', REGEX_UUID)->where('id', REGEX_ID);
+    Route::post('events/{uuid}/participants/send-sugestions-reminder', [ParticipantController::class, 'sendSugestionsReminder'])->where('uuid', REGEX_UUID);
 });
 
 Route::get('events/{uuid}/confirmed/participants', [ParticipantConfirmedController::class, 'index'])->where('uuid', REGEX_UUID);
